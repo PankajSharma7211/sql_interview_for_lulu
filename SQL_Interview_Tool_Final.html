@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL and PYTHON Technical Interview  Lulu Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f1117;
+  --paper: #f5f2eb;
+  --cream: #ede9df;
+  --rule: #d4cfc3;
+  --accent: #1a4d8f;
+  --accent-light: #e8eef7;
+  --easy: #1a6b3a;
+  --easy-bg: #eaf4ee;
+  --medium: #b85c00;
+  --medium-bg: #fef3e8;
+  --hard: #8b1a1a;
+  --hard-bg: #fbeaea;
+  --hint: #5a3e8b;
+  --hint-bg: #f0ecf8;
+  --shadow: 0 2px 16px rgba(15,17,23,0.08);
+  --shadow-lg: 0 8px 40px rgba(15,17,23,0.13);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--ink);
+  display: flex; align-items: center; gap: 0;
+  height: 52px;
+  padding: 0 24px;
+  border-bottom: 2px solid #2a2d38;
+}
+.nav-logo {
+  font-family: 'Fraunces', serif;
+  font-size: 17px; font-weight: 600;
+  color: #fff; letter-spacing: -0.3px;
+  margin-right: 32px;
+  white-space: nowrap;
+}
+.nav-logo span { color: #6b9ed4; }
+.nav-tabs { display: flex; gap: 2px; flex: 1; }
+.nav-tab {
+  padding: 6px 18px;
+  font-size: 13px; font-weight: 500;
+  color: #9ca3af; border: none;
+  background: transparent; cursor: pointer;
+  border-radius: 6px;
+  transition: all .2s;
+  display: flex; align-items: center; gap: 7px;
+  white-space: nowrap;
+}
+.nav-tab:hover { color: #e5e7eb; background: #1f2230; }
+.nav-tab.active { color: #fff; background: #2a2d3e; }
+.nav-tab .tab-num {
+  width: 20px; height: 20px;
+  background: #374151; border-radius: 50%;
+  font-size: 11px; display: flex; align-items: center; justify-content: center;
+  color: #9ca3af;
+}
+.nav-tab.active .tab-num { background: var(--accent); color: #fff; }
+
+/* ── PAGES ── */
+.page { display: none; padding-top: 52px; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ══════════════════════════════════════
+   PAGE 1 — INSTRUCTIONS
+══════════════════════════════════════ */
+.p1-hero {
+  background: var(--ink);
+  padding: 48px 40px 40px;
+  position: relative; overflow: hidden;
+}
+.p1-hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -40px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(107,158,212,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.p1-hero-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  color: #6b9ed4; text-transform: uppercase; margin-bottom: 12px;
+}
+.p1-hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 36px; font-weight: 700;
+  color: #fff; line-height: 1.15;
+  margin-bottom: 10px;
+}
+.p1-hero h1 em { font-style: italic; color: #6b9ed4; }
+.p1-hero p {
+  color: #9ca3af; font-size: 14px; line-height: 1.6;
+  max-width: 520px;
+}
+.p1-body { padding: 32px 40px; max-width: 900px; }
+
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 14px; margin-top: 32px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--rule);
+}
+
+.checklist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.check-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: #fff; border: 1px solid var(--rule);
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 14px; line-height: 1.5; color: #374151;
+}
+.check-item .ci-icon {
+  width: 22px; height: 22px; min-width: 22px;
+  background: var(--accent-light); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; margin-top: 1px;
+}
+.check-item strong { color: var(--ink); }
+.check-item a { color: var(--accent); text-decoration: none; font-weight: 500; }
+.check-item a:hover { text-decoration: underline; }
+
+.callout {
+  border-radius: 10px; padding: 14px 18px;
+  font-size: 13.5px; line-height: 1.6;
+  display: flex; gap: 12px; align-items: flex-start;
+  margin: 16px 0;
+}
+.callout.warn { background: #fff8e6; border: 1px solid #f5d87a; }
+.callout.info { background: var(--accent-light); border: 1px solid #b8cfe8; }
+.callout.tip  { background: var(--easy-bg); border: 1px solid #a8d5b8; }
+.callout-icon { font-size: 18px; line-height: 1; }
+.callout strong { display: block; font-size: 12px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 3px; color: #374151; }
+
+.scoring-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  border: 1px solid var(--rule); border-radius: 12px;
+  overflow: hidden; background: #fff;
+  margin: 12px 0;
+}
+.sg-head { background: var(--ink); color: #fff; font-size: 12px; font-weight: 600; padding: 10px 14px; }
+.sg-cell { padding: 10px 14px; font-size: 13px; border-top: 1px solid var(--rule); }
+.sg-easy { background: var(--easy-bg); color: var(--easy); font-weight: 600; }
+.sg-medium { background: var(--medium-bg); color: var(--medium); font-weight: 600; }
+.sg-hard { background: var(--hard-bg); color: var(--hard); font-weight: 600; }
+
+.timing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 12px 0;
+}
+.tg-card {
+  border-radius: 10px; padding: 16px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.tg-card.easy { background: var(--easy-bg); border: 1px solid #a8d5b8; }
+.tg-card.medium { background: var(--medium-bg); border: 1px solid #f0bc88; }
+.tg-card.hard { background: var(--hard-bg); border: 1px solid #e8a8a8; }
+.tg-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.tg-card.easy .tg-label { color: var(--easy); }
+.tg-card.medium .tg-label { color: var(--medium); }
+.tg-card.hard .tg-label { color: var(--hard); }
+.tg-time { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; color: var(--ink); }
+.tg-note { font-size: 12px; color: #6b7280; }
+
+.start-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 10px;
+  padding: 13px 28px; font-size: 15px; font-weight: 600;
+  cursor: pointer; margin-top: 24px;
+  font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+  box-shadow: 0 4px 14px rgba(26,77,143,0.3);
+}
+.start-btn:hover { background: #163f7a; transform: translateY(-1px); }
+
+/* ══════════════════════════════════════
+   PAGE 2 — QUESTIONS
+══════════════════════════════════════ */
+.p2-layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 52px); }
+
+.p2-sidebar {
+  background: var(--ink);
+  padding: 24px 0;
+  border-right: 1px solid #2a2d38;
+  position: sticky; top: 52px; height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+.sidebar-section { margin-bottom: 8px; }
+.sidebar-heading {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: #4b5563;
+  padding: 8px 20px 6px;
+}
+.sidebar-btn {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 10px 20px;
+  background: transparent; border: none;
+  color: #9ca3af; font-size: 13.5px;
+  cursor: pointer; text-align: left;
+  transition: all .15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.sidebar-btn:hover { background: #1a1d2e; color: #e5e7eb; }
+.sidebar-btn.active { background: #1e2235; color: #fff; }
+.sidebar-btn .sb-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.sb-easy { background: #4ade80; }
+.sb-medium { background: #fb923c; }
+.sb-hard { background: #f87171; }
+.sidebar-btn .sb-num {
+  margin-left: auto; font-size: 11px; color: #4b5563;
+  background: #2a2d3e; padding: 2px 7px; border-radius: 10px;
+}
+.sidebar-btn.active .sb-num { color: #9ca3af; }
+
+.sidebar-divider { height: 1px; background: #1f2230; margin: 8px 20px; }
+
+.p2-main { padding: 28px 36px; }
+
+.level-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.badge-easy { background: var(--easy-bg); color: var(--easy); border: 1px solid #a8d5b8; }
+.badge-medium { background: var(--medium-bg); color: var(--medium); border: 1px solid #f0bc88; }
+.badge-hard { background: var(--hard-bg); color: var(--hard); border: 1px solid #e8a8a8; }
+
+.q-title {
+  font-family: 'Fraunces', serif;
+  font-size: 22px; font-weight: 600; color: var(--ink);
+  margin-bottom: 4px; line-height: 1.3;
+}
+.q-meta { font-size: 13px; color: #6b7280; margin-bottom: 20px; }
+.q-meta strong { color: var(--ink); }
+
+.q-prompt-box {
+  background: #fff; border: 1.5px solid var(--rule);
+  border-radius: 12px; padding: 20px 24px;
+  font-size: 15px; line-height: 1.7; color: #1f2937;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+.q-prompt-box strong { color: var(--ink); }
+
+.data-block { margin-bottom: 20px; }
+.data-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.data-block-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #6b7280;
+  display: flex; align-items: center; gap: 6px;
+}
+.copy-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 7px;
+  padding: 7px 14px; font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+.copy-btn:hover { background: #163f7a; }
+.copy-btn.copied { background: var(--easy); }
+
+pre.code-block {
+  background: #0f1117; color: #e5e7eb;
+  font-family: 'DM Mono', monospace;
+  font-size: 12.5px; line-height: 1.7;
+  padding: 18px 20px; border-radius: 10px;
+  overflow-x: auto; white-space: pre;
+  border: 1px solid #2a2d38;
+  max-height: 300px; overflow-y: auto;
+}
+
+.hints-block { margin-bottom: 20px; }
+.hint-toggle {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--hint-bg); border: 1px solid #c4b8e8;
+  border-radius: 8px; padding: 8px 14px;
+  font-size: 13px; font-weight: 500; color: var(--hint);
+  cursor: pointer; width: 100%; text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  transition: all .2s; margin-bottom: 6px;
+}
+.hint-toggle:hover { background: #e8e2f5; }
+.hint-toggle .ht-arrow { margin-left: auto; transition: transform .2s; }
+.hint-toggle.open .ht-arrow { transform: rotate(180deg); }
+.hint-content {
+  display: none; background: var(--hint-bg);
+  border: 1px solid #c4b8e8; border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 10px 14px;
+  font-size: 13px; color: #3d2d6b; line-height: 1.6;
+  margin-bottom: 6px;
+}
+.hint-content.show { display: block; }
+
+.answer-block { margin-bottom: 20px; }
+.answer-toggle {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--cream); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 8px 14px;
+  font-size: 13px; font-weight: 500; color: #374151;
+  cursor: pointer; width: 100%; text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  transition: all .2s; margin-bottom: 6px;
+}
+.answer-toggle:hover { background: #e8e4d8; }
+.answer-toggle .at-arrow { margin-left: auto; transition: transform .2s; }
+.answer-toggle.open .at-arrow { transform: rotate(180deg); }
+.answer-content { display: none; }
+.answer-content.show { display: block; }
+
+.expected-box {
+  background: var(--easy-bg); border: 1px solid #a8d5b8;
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 13px; color: #1a4d2a;
+  margin-top: 8px; line-height: 1.5;
+}
+.expected-box strong { font-weight: 600; }
+
+.q-nav {
+  display: flex; gap: 10px; margin-top: 24px;
+  padding-top: 20px; border-top: 1px solid var(--rule);
+}
+.qnav-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: #fff; border: 1.5px solid var(--rule);
+  border-radius: 8px; padding: 9px 18px;
+  font-size: 13px; font-weight: 500; color: #374151;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+.qnav-btn:hover { border-color: var(--accent); color: var(--accent); }
+.qnav-btn.primary {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+  margin-left: auto;
+}
+.qnav-btn.primary:hover { background: #163f7a; }
+
+/* ══════════════════════════════════════
+   PAGE 3 — SCORE SHEET
+══════════════════════════════════════ */
+.p3-body { padding: 28px 40px; max-width: 860px; }
+.p3-hero {
+  background: var(--ink); border-radius: 14px;
+  padding: 24px 28px; margin-bottom: 28px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.p3-hero-text h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px; color: #fff; font-weight: 600; margin-bottom: 4px;
+}
+.p3-hero-text p { font-size: 13px; color: #9ca3af; }
+.p3-total-display {
+  text-align: right;
+}
+.p3-total-display .total-num {
+  font-family: 'Fraunces', serif;
+  font-size: 48px; font-weight: 700; color: #6b9ed4;
+  line-height: 1;
+}
+.p3-total-display .total-label { font-size: 12px; color: #6b7280; }
+
+.candidate-form {
+  background: #fff; border: 1px solid var(--rule);
+  border-radius: 12px; padding: 20px 24px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px; margin-bottom: 24px;
+}
+.form-field label {
+  display: block; font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: #6b7280; margin-bottom: 6px;
+}
+.form-field input {
+  width: 100%; padding: 9px 12px;
+  border: 1.5px solid var(--rule); border-radius: 8px;
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+  color: var(--ink); background: var(--paper);
+  outline: none; transition: border-color .2s;
+}
+.form-field input:focus { border-color: var(--accent); background: #fff; }
+
+.score-section { margin-bottom: 28px; }
+.score-section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px; font-weight: 600; color: var(--ink);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+}
+.score-section-title .lang-badge {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 3px 10px;
+  border-radius: 20px; background: var(--accent-light);
+  color: var(--accent);
+}
+.score-section-title .lang-total {
+  margin-left: auto; font-family: 'DM Mono', monospace;
+  font-size: 16px; color: var(--accent);
+}
+
+.score-row {
+  background: #fff; border: 1px solid var(--rule);
+  border-radius: 10px; padding: 14px 18px;
+  margin-bottom: 8px;
+  display: grid; grid-template-columns: 80px 1fr auto;
+  gap: 16px; align-items: center;
+  transition: opacity .2s, background .2s;
+}
+.score-row.dna {
+  opacity: 0.4; background: var(--cream);
+}
+.score-row.dna .score-btns { pointer-events: none; }
+.score-row.dna .sr-notes input { pointer-events: none; }
+.dna-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 600;
+  border: 1.5px solid var(--rule);
+  background: #fff; color: #9ca3af;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .15s; white-space: nowrap; margin-top: 4px;
+}
+.dna-btn:hover { border-color: #9ca3af; color: #6b7280; }
+.dna-btn.dna-active {
+  background: #f3f4f6; border-color: #6b7280;
+  color: #374151;
+}
+.sr-badge { text-align: center; }
+.sr-info { display: flex; flex-direction: column; gap: 3px; }
+.sr-topic { font-size: 14px; font-weight: 500; color: var(--ink); }
+.sr-notes input {
+  width: 100%; border: none; border-bottom: 1.5px solid var(--rule);
+  font-size: 12px; color: #6b7280; padding: 2px 4px;
+  font-family: 'DM Sans', sans-serif; background: transparent;
+  outline: none;
+}
+.sr-notes input:focus { border-color: var(--accent); }
+.sr-notes input::placeholder { color: #d1d5db; }
+.sr-score { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.score-btns { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.score-btn {
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--rule); border-radius: 6px;
+  background: #fff; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'DM Mono', monospace;
+  color: #6b7280; transition: all .15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.score-btn:hover { border-color: var(--accent); color: var(--accent); }
+.score-btn.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+.hint-used-label { font-size: 10px; color: #9ca3af; }
+
+.score-subtotal {
+  background: var(--accent-light); border: 1px solid #b8cfe8;
+  border-radius: 10px; padding: 12px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.score-subtotal .st-label { font-size: 13px; font-weight: 600; color: var(--accent); }
+.score-subtotal .st-val {
+  font-family: 'Fraunces', serif; font-size: 22px;
+  font-weight: 700; color: var(--accent);
+}
+
+.outcome-section {
+  background: #fff; border: 1px solid var(--rule);
+  border-radius: 12px; padding: 20px 24px; margin-bottom: 24px;
+}
+.outcome-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+.outcome-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.outcome-btn {
+  padding: 9px 20px; border-radius: 8px;
+  border: 2px solid var(--rule); background: #fff;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all .2s;
+  color: #374151;
+}
+.outcome-btn:hover { border-color: var(--accent); color: var(--accent); }
+.outcome-btn.sel-strong { background: var(--easy-bg); border-color: var(--easy); color: var(--easy); }
+.outcome-btn.sel-hire { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.outcome-btn.sel-maybe { background: var(--medium-bg); border-color: var(--medium); color: var(--medium); }
+.outcome-btn.sel-no { background: var(--hard-bg); border-color: var(--hard); color: var(--hard); }
+
+.comments-area {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid var(--rule); border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 13.5px;
+  color: var(--ink); resize: vertical; min-height: 80px;
+  outline: none; transition: border-color .2s;
+}
+.comments-area:focus { border-color: var(--accent); }
+
+.action-bar {
+  display: flex; gap: 12px; align-items: center;
+  padding: 20px 0;
+}
+.print-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--ink); color: #fff;
+  border: none; border-radius: 10px;
+  padding: 12px 24px; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+.print-btn:hover { background: #1f2230; }
+.reset-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: #fff; color: #6b7280;
+  border: 1.5px solid var(--rule); border-radius: 10px;
+  padding: 12px 20px; font-size: 14px; font-weight: 500;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+.reset-btn:hover { border-color: var(--hard); color: var(--hard); }
+.print-note { font-size: 12px; color: #9ca3af; margin-left: 4px; }
+
+/* ── PRINT ── */
+@media print {
+  .nav, .action-bar, .score-btns, .outcome-btns, .hint-toggle,
+  .hint-content, .answer-toggle, .answer-content,
+  .p2-sidebar, .qnav-btn, .start-btn, .dna-btn { display: none !important; }
+  body { background: #fff; font-size: 13px; }
+  .page { display: none !important; }
+  #page3 { display: block !important; padding-top: 0; }
+  .p3-body { padding: 16px; max-width: 100%; }
+  .candidate-form { grid-template-columns: 1fr 1fr 1fr; }
+  .p3-hero { border-radius: 8px; }
+  .score-row { break-inside: avoid; }
+  .score-row.dna { display: none !important; }
+  .sr-notes input { border-bottom: 1px solid #ccc; }
+  .hint-used-label { font-size: 11px; color: #374151; font-weight: 500; }
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+pre::-webkit-scrollbar { height: 6px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">Lulu SQL <span>Interview</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage(1, this)">
+      <span class="tab-num">1</span> Instructions
+    </button>
+    <button class="nav-tab" onclick="showPage(2, this)">
+      <span class="tab-num">2</span> Questions & Data
+    </button>
+    <button class="nav-tab" onclick="showPage(3, this)">
+      <span class="tab-num">3</span> Score Sheet
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     PAGE 1 — INSTRUCTIONS
+════════════════════════════════════ -->
+<div class="page active" id="page1">
+  <div class="p1-hero">
+    <div class="p1-hero-label">Technical Interview Tool — SQL Assessment</div>
+    <h1>Interviewer <em>Guide</em></h1>
+    <p>Read this before starting. This tool gives you questions, data scripts, hints and scoring — all in one place. Keep this tab open throughout the interview.</p>
+  </div>
+
+  <div class="p1-body">
+
+    <div class="section-label">Section 1 — Pre-Interview Checklist</div>
+    <div class="checklist">
+      <div class="check-item"><div class="ci-icon">📋</div><div>Ensure you have <strong>this tool open</strong> on your screen before the candidate joins. Do not share your screen — keep this visible only to you. (you can share the postgress compatible function if the candidate is stuck)</div></div>
+      <div class="check-item"><div class="ci-icon">🔗</div><div>Open compiler links in separate browser tabs now:<br>
+        <strong>SQL:</strong> <a href="https://onecompiler.com/postgresql" target="_blank">https://onecompiler.com/postgresql</a><br>
+        <strong>Python:</strong> <a href="https://onecompiler.com/python" target="_blank">https://onecompiler.com/python</a>
+      </div></div>
+      <div class="check-item"><div class="ci-icon">💬</div><div>Have <strong>Microsoft Teams chat</strong> open with the candidate. You will paste the data setup code and compiler links via Teams chat.</div></div>
+      <div class="check-item"><div class="ci-icon">📝</div><div>Go to <strong>Page 3 (Score Sheet)</strong> and fill in the candidate name, role and date before the interview starts.</div></div>
+      <div class="check-item"><div class="ci-icon">🔍</div><div>Preview the questions on <strong>Page 2</strong> and decide which questions you will ask. Copy the data code from Page 2 and have it ready to paste.</div></div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div><strong>Privacy Reminder</strong>Never share your screen with the candidate. They should only see what you deliberately paste into Teams chat.</div>
+    </div>
+
+    <div class="section-label">Section 2 — Conducting the Interview</div>
+
+    <div class="checklist">
+      <div class="check-item"><div class="ci-icon">1️⃣</div><div><strong>Always start with Easy SQL questions.</strong> This warms the candidate up and quickly gauges baseline competence. If they cannot answer Easy questions, politely conclude the interview — no need to continue.</div></div>
+      <div class="check-item"><div class="ci-icon">2️⃣</div><div><strong>Progress Easy → Medium → Hard</strong> within SQL, then repeat the same for Python. Do not skip levels or switch languages mid-way.</div></div>
+      <div class="check-item"><div class="ci-icon">3️⃣</div><div>For each SQL question, <strong>copy the data code from Page 2 and paste it in Teams chat</strong>. Ask the candidate to run it in the compiler before writing their answer query.</div></div>
+      <div class="check-item"><div class="ci-icon">4️⃣</div><div><strong>Hints are allowed but reduce the score.</strong> Give syntax hint first, then logic hint only if still stuck. Never give hints on Easy questions.</div></div>
+      <div class="check-item"><div class="ci-icon">5️⃣</div><div>Aim for <strong>at least 6 questions </strong>: 2 Easy + 3/4 Medium + 1/0 Hard.</div></div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">🤝</div>
+      <div><strong>Courtesy Note</strong>If concluding early due to poor performance, always thank the candidate sincerely and let them know the team will be in touch. Let HR handle feedback communication.</div>
+    </div>
+
+    <div class="section-label">Section 3 — Scoring Guidance</div>
+
+    <div class="scoring-grid">
+      <div class="sg-head">Difficulty</div>
+      <div class="sg-head">No Hints</div>
+      <div class="sg-head">Syntax Hint</div>
+      <div class="sg-head">Syntax + Logic Hint</div>
+      <div class="sg-cell sg-easy">Easy</div>
+      <div class="sg-cell">1 mark</div>
+      <div class="sg-cell" style="color:#9ca3af;font-style:italic">Not applicable</div>
+      <div class="sg-cell" style="color:#9ca3af;font-style:italic">Not applicable</div>
+      <div class="sg-cell sg-medium">Medium</div>
+      <div class="sg-cell">3 marks</div>
+      <div class="sg-cell">2 marks</div>
+      <div class="sg-cell">1 mark</div>
+      <div class="sg-cell sg-hard">Hard</div>
+      <div class="sg-cell">5 marks</div>
+      <div class="sg-cell">4 marks</div>
+      <div class="sg-cell">3 marks</div>
+    </div>
+
+   
+
+    <div class="section-label">Timing Guidance</div>
+    <div class="timing-grid">
+      <div class="tg-card easy">
+        <div class="tg-label">Easy</div>
+        <div class="tg-time">3–4 min</div>
+        <div class="tg-note">Baseline screening — move on quickly if passed</div>
+      </div>
+      <div class="tg-card medium">
+        <div class="tg-label">Medium</div>
+        <div class="tg-time">6–8 min</div>
+        <div class="tg-note">Allow thinking time; one hint round is acceptable</div>
+      </div>
+      <div class="tg-card hard">
+        <div class="tg-label">Hard</div>
+        <div class="tg-time">10–12 min</div>
+        <div class="tg-note">Expect candidates to think aloud and iterate</div>
+      </div>
+    </div>
+
+    <div class="section-label">Section 4 — Post-Interview</div>
+    <div class="checklist">
+      <div class="check-item"><div class="ci-icon">⏱️</div><div>Complete the score sheet <strong>within 10 minutes</strong> of the interview ending while observations are fresh.</div></div>
+      <div class="check-item"><div class="ci-icon">📤</div><div>Submit the completed score sheet to the hiring manager or HR team on the same day. Use the <strong>Print / Screenshot</strong> button on Page 3.</div></div>
+      <div class="check-item"><div class="ci-icon">🚩</div><div>Flag any anomalies in the Notes column — suspected copying, unusual delays, technical issues.</div></div>
+    </div>
+
+    <button class="start-btn" onclick="showPage(2, document.querySelectorAll('.nav-tab')[1])">
+      Go to Questions & Data →
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 2 — QUESTIONS
+════════════════════════════════════ -->
+<div class="page" id="page2">
+  <div class="p2-layout">
+    <aside class="p2-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Easy — 1 mark each</div>
+        <button class="sidebar-btn active" onclick="showQ('e1', this)">
+          <span class="sb-dot sb-easy"></span> Q1: AVG + HAVING
+          <span class="sb-num">E</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('e2', this)">
+          <span class="sb-dot sb-easy"></span> Q2: INNER JOIN
+          <span class="sb-num">E</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('e3', this)">
+          <span class="sb-dot sb-easy"></span> Q3: WHERE Filter
+          <span class="sb-num">E</span>
+        </button>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Medium — up to 3 marks</div>
+        <button class="sidebar-btn" onclick="showQ('m1', this)">
+          <span class="sb-dot sb-medium"></span> Q1: Self JOIN + COALESCE
+          <span class="sb-num">M</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('m2', this)">
+          <span class="sb-dot sb-medium"></span> Q2: ROW_NUMBER
+          <span class="sb-num">M</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('m3', this)">
+          <span class="sb-dot sb-medium"></span> Q3: Running Total
+          <span class="sb-num">M</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('m4', this)">
+          <span class="sb-dot sb-medium"></span> Q4: CASE WHEN
+          <span class="sb-num">M</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('m5', this)">
+          <span class="sb-dot sb-medium"></span> Q5: Contribution %
+          <span class="sb-num">M</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('m6', this)">
+          <span class="sb-dot sb-medium"></span> Q6: LAG prev month
+          <span class="sb-num">M</span>
+        </button>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Hard — up to 5 marks</div>
+        <button class="sidebar-btn" onclick="showQ('h1', this)">
+          <span class="sb-dot sb-hard"></span> Q1: Top per City
+          <span class="sb-num">H</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('h2', this)">
+          <span class="sb-dot sb-hard"></span> Q2: RFM Classification
+          <span class="sb-num">H</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('h3', this)">
+          <span class="sb-dot sb-hard"></span> Q3: MoM Growth
+          <span class="sb-num">H</span>
+        </button>
+        <button class="sidebar-btn" onclick="showQ('h4', this)">
+          <span class="sb-dot sb-hard"></span> Q4: Monthly Streak
+          <span class="sb-num">H</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="p2-main" id="q-main">
+      <!-- Questions rendered by JS -->
+    </main>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 3 — SCORE SHEET
+════════════════════════════════════ -->
+<div class="page" id="page3">
+  <div class="p3-body">
+
+    <div class="p3-hero">
+      <div class="p3-hero-text">
+        <h2>Interview Score Sheet</h2>
+        <p>Mark questions as "Did Not Ask" to exclude them. Totals calculate automatically from asked questions only.</p>
+      </div>
+      <div class="p3-total-display">
+        <div class="total-num" id="grand-total">0</div>
+        <div class="total-label">/ <span id="grand-max">0</span> Total (asked questions only)</div>
+      </div>
+    </div>
+
+    <!-- Candidate Details -->
+    <div class="candidate-form">
+      <div class="form-field">
+        <label>Candidate Name</label>
+        <input type="text" id="cand-name" placeholder="e.g. Rahul Mehta">
+      </div>
+      <div class="form-field">
+        <label>Role Applied For</label>
+        <input type="text" id="cand-role" placeholder="e.g. Data Analyst">
+      </div>
+      <div class="form-field">
+        <label>Date</label>
+        <input type="date" id="cand-date">
+      </div>
+      <div class="form-field">
+        <label>Interviewer</label>
+        <input type="text" id="cand-interviewer" placeholder="Your name">
+      </div>
+      <div class="form-field">
+        <label>Round #</label>
+        <input type="text" id="cand-round" placeholder="e.g. Round 1">
+      </div>
+      <div class="form-field">
+        <label>Duration</label>
+        <input type="text" id="cand-duration" placeholder="e.g. 65 min">
+      </div>
+    </div>
+
+    <!-- SQL Score -->
+    <div class="score-section">
+      <div class="score-section-title">
+        SQL Questions
+        <span class="lang-badge">SQL</span>
+        <span class="lang-total" id="sql-total-label">0 / 0</span>
+      </div>
+      <div id="sql-rows"></div>
+      <div class="score-subtotal">
+        <div class="st-label">SQL Score (asked questions only)</div>
+        <div class="st-val"><span id="sql-total">0</span> / <span id="sql-max">0</span></div>
+      </div>
+    </div>
+
+    <!-- Outcome -->
+    <div class="outcome-section">
+      <div class="outcome-title">Overall Recommendation</div>
+      <div class="outcome-btns">
+        <button class="outcome-btn" onclick="selectOutcome(this, 'sel-strong')">⭐ Strong Hire</button>
+        <button class="outcome-btn" onclick="selectOutcome(this, 'sel-hire')">✅ Hire</button>
+        <button class="outcome-btn" onclick="selectOutcome(this, 'sel-maybe')">🤔 Maybe</button>
+        <button class="outcome-btn" onclick="selectOutcome(this, 'sel-no')">❌ No Hire</button>
+      </div>
+      <label style="font-size:12px;font-weight:600;color:#6b7280;display:block;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">Interviewer Comments & Rationale</label>
+      <textarea class="comments-area" id="comments" placeholder="Note strengths, weaknesses, communication style, any anomalies..."></textarea>
+    </div>
+
+    <div class="action-bar">
+      <button class="print-btn" onclick="window.print()">🖨️ Print / Screenshot</button>
+      <button class="reset-btn" onclick="resetSheet()">↺ Reset Sheet</button>
+      <span class="print-note">Tip: Use browser Print → Save as PDF, or take a screenshot (Win+Shift+S)</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// DATA
+// ══════════════════════════════════════
+
+const EASY_DATA = `CREATE TABLE employees (
+  emp_id    INT PRIMARY KEY,
+  name      VARCHAR(50),
+  dept      VARCHAR(50),
+  salary    NUMERIC(10,2),
+  hire_date DATE
+);
+
+CREATE TABLE orders (
+  order_id   INT PRIMARY KEY,
+  emp_id     INT,
+  product    VARCHAR(50),
+  amount     NUMERIC(10,2),
+  order_date DATE
+);
+
+INSERT INTO employees (emp_id, name, dept, salary, hire_date) VALUES
+  (1,  'Aarav Sharma',  'Engineering', 75000, '2019-03-15'),
+  (2,  'Priya Nair',    'Marketing',   52000, '2020-07-01'),
+  (3,  'Rahul Mehta',   'Engineering', 90000, '2017-11-20'),
+  (4,  'Sneha Iyer',    'HR',          45000, '2021-01-10'),
+  (5,  'Vikram Joshi',  'Marketing',   61000, '2018-05-25'),
+  (6,  'Divya Rao',     'Engineering', 83000, '2016-09-05'),
+  (7,  'Kiran Patel',   'HR',          48000, '2022-04-18'),
+  (8,  'Meera Gupta',   'Marketing',   55000, '2019-12-30'),
+  (9,  'Anil Kumar',    'Engineering', 70000, '2020-08-14'),
+  (10, 'Pooja Reddy',   'HR',          42000, '2023-02-22');
+
+INSERT INTO orders (order_id, emp_id, product, amount, order_date) VALUES
+  (1,  1, 'Laptop',   55000, '2024-01-10'),
+  (2,  2, 'Phone',    22000, '2024-01-15'),
+  (3,  1, 'Tablet',   18000, '2024-02-05'),
+  (4,  3, 'Phone',    21000, '2024-02-20'),
+  (5,  5, 'Laptop',   60000, '2024-03-01'),
+  (6,  2, 'Charger',   1500, '2024-03-10'),
+  (7,  6, 'Laptop',   52000, '2024-03-22'),
+  (8,  8, 'Tablet',   19000, '2024-04-05'),
+  (9,  3, 'Phone',    23000, '2024-04-18'),
+  (10, 9, 'Charger',   2000, '2024-05-01');`;
+
+const MEDIUM_DATA = `CREATE TABLE employees (
+  emp_id     INT PRIMARY KEY,
+  name       VARCHAR(50),
+  dept       VARCHAR(50),
+  salary     NUMERIC(10,2),
+  manager_id INT
+);
+
+CREATE TABLE sales (
+  sale_id    INT PRIMARY KEY,
+  emp_id     INT,
+  region     VARCHAR(50),
+  sale_amt   NUMERIC(10,2),
+  sale_date  DATE
+);
+
+INSERT INTO employees (emp_id, name, dept, salary, manager_id) VALUES
+  (1,  'Aarav Sharma',  'Engineering', 75000, 3),
+  (2,  'Priya Nair',    'Marketing',   52000, 5),
+  (3,  'Rahul Mehta',   'Engineering', 90000, NULL),
+  (4,  'Sneha Iyer',    'HR',          45000, 7),
+  (5,  'Vikram Joshi',  'Marketing',   61000, NULL),
+  (6,  'Divya Rao',     'Engineering', 83000, 3),
+  (7,  'Kiran Patel',   'HR',          48000, NULL),
+  (8,  'Meera Gupta',   'Marketing',   55000, 5),
+  (9,  'Anil Kumar',    'Engineering', 70000, 3),
+  (10, 'Pooja Reddy',   'HR',          42000, 7);
+
+INSERT INTO sales (sale_id, emp_id, region, sale_amt, sale_date) VALUES
+  (1,  2, 'North', 15000, '2024-01-05'),
+  (2,  5, 'South', 32000, '2024-01-18'),
+  (3,  8, 'East',  21000, '2024-02-02'),
+  (4,  2, 'South', 18000, '2024-02-14'),
+  (5,  5, 'North', 27000, '2024-03-01'),
+  (6,  8, 'West',  14000, '2024-03-19'),
+  (7,  2, 'East',  22000, '2024-04-07'),
+  (8,  5, 'West',  35000, '2024-04-22'),
+  (9,  8, 'North', 19000, '2024-05-10'),
+  (10, 2, 'West',  11000, '2024-05-28');`;
+
+const HARD_DATA = `CREATE TABLE customers (
+  cust_id   INT PRIMARY KEY,
+  name      VARCHAR(50),
+  city      VARCHAR(50),
+  segment   VARCHAR(30)
+);
+
+CREATE TABLE transactions (
+  txn_id     INT PRIMARY KEY,
+  cust_id    INT,
+  txn_date   DATE,
+  amount     NUMERIC(10,2),
+  category   VARCHAR(30),
+  status     VARCHAR(20)
+);
+
+CREATE TABLE returns (
+  return_id   INT PRIMARY KEY,
+  txn_id      INT,
+  return_date DATE,
+  reason      VARCHAR(50)
+);
+
+INSERT INTO customers VALUES
+  (1,'Aarav Sharma','Mumbai','Premium'),
+  (2,'Priya Nair','Delhi','Regular'),
+  (3,'Rahul Mehta','Bangalore','Premium'),
+  (4,'Sneha Iyer','Chennai','Regular'),
+  (5,'Vikram Joshi','Mumbai','Premium'),
+  (6,'Divya Rao','Hyderabad','Regular'),
+  (7,'Kiran Patel','Bangalore','Regular'),
+  (8,'Meera Gupta','Delhi','Premium'),
+  (9,'Anil Kumar','Mumbai','Regular'),
+  (10,'Pooja Reddy','Chennai','Premium');
+
+INSERT INTO transactions VALUES
+  (1,1,'2024-01-05',12000,'Electronics','Completed'),
+  (2,1,'2024-02-05',8500,'Clothing','Completed'),
+  (3,1,'2024-03-05',15000,'Electronics','Completed'),
+  (4,1,'2024-04-05',11000,'Grocery','Completed'),
+  (5,1,'2024-05-05',9500,'Clothing','Completed'),
+  (6,2,'2024-01-10',5000,'Grocery','Completed'),
+  (7,2,'2024-02-10',7000,'Electronics','Completed'),
+  (8,2,'2024-04-10',4500,'Grocery','Completed'),
+  (9,3,'2024-01-15',22000,'Electronics','Completed'),
+  (10,3,'2024-02-15',18000,'Electronics','Completed'),
+  (11,3,'2024-03-15',25000,'Electronics','Completed'),
+  (12,3,'2024-04-15',20000,'Clothing','Completed'),
+  (13,3,'2024-05-15',17000,'Electronics','Completed'),
+  (14,3,'2024-06-15',23000,'Electronics','Completed'),
+  (15,4,'2024-02-20',3000,'Grocery','Completed'),
+  (16,4,'2024-03-20',4500,'Clothing','Completed'),
+  (17,4,'2024-04-20',3200,'Grocery','Completed'),
+  (18,5,'2024-01-25',30000,'Electronics','Completed'),
+  (19,5,'2024-02-25',27000,'Electronics','Completed'),
+  (20,5,'2024-03-25',31000,'Electronics','Completed'),
+  (21,6,'2024-03-01',6000,'Clothing','Completed'),
+  (22,7,'2024-01-08',8000,'Electronics','Completed'),
+  (23,7,'2024-02-08',9000,'Electronics','Completed'),
+  (24,7,'2024-03-08',7500,'Grocery','Completed'),
+  (25,8,'2024-01-12',14000,'Clothing','Completed'),
+  (26,8,'2024-02-12',16000,'Electronics','Completed'),
+  (27,8,'2024-03-12',13000,'Clothing','Completed'),
+  (28,8,'2024-04-12',18000,'Electronics','Completed'),
+  (29,9,'2024-02-18',2500,'Grocery','Completed'),
+  (30,10,'2024-01-22',19000,'Electronics','Completed'),
+  (31,10,'2024-02-22',21000,'Electronics','Completed'),
+  (32,10,'2024-03-22',17000,'Clothing','Completed'),
+  (33,10,'2024-04-22',22000,'Electronics','Completed'),
+  (34,10,'2024-05-22',20000,'Electronics','Completed');
+
+INSERT INTO returns VALUES
+  (1,2,'2024-02-10','Size issue'),
+  (2,7,'2024-02-15','Defective'),
+  (3,10,'2024-02-20','Wrong item'),
+  (4,16,'2024-03-25','Size issue'),
+  (5,26,'2024-02-18','Defective'),
+  (6,27,'2024-03-18','Changed mind');`;
+
+const QUESTIONS = {
+  e1: {
+    level: 'Easy', marks: 1, topic: 'GROUP BY + HAVING (AVG)',
+    data: EASY_DATA,
+    question: 'Write a query to find departments where the average salary is greater than 55,000. Show the department name and the average salary.',
+    hints: [
+      { label: 'Syntax Hint (score → 0, Easy = pass/fail)', text: 'You need to GROUP BY department first, then filter groups — but you cannot use WHERE on an aggregate. Look up HAVING.' }
+    ],
+    answer: `SELECT dept, AVG(salary) AS avg_salary\nFROM employees\nGROUP BY dept\nHAVING AVG(salary) > 55000;`,
+    expected: 'Engineering (79500), Marketing (56000). HR average is 45000 — filtered out.'
+  },
+  e2: {
+    level: 'Easy', marks: 1, topic: 'INNER JOIN',
+    data: EASY_DATA,
+    question: "Write a query to display each employee's name, department, and their order details (product and amount). Show only employees who have placed at least one order.",
+    hints: [
+      { label: 'Syntax Hint (score → 0, Easy = pass/fail)', text: 'You need to combine rows from two tables using a common column (emp_id). INNER JOIN keeps only rows that match in both tables.' }
+    ],
+    answer: `SELECT e.name, e.dept, o.product, o.amount\nFROM employees e\nINNER JOIN orders o ON e.emp_id = o.emp_id;`,
+    expected: '10 rows. Sneha Iyer, Kiran Patel and Pooja Reddy have no orders — they are correctly excluded.'
+  },
+  e3: {
+    level: 'Easy', marks: 1, topic: 'WHERE with multiple conditions',
+    data: EASY_DATA,
+    question: 'Write a query to display all columns for employees who work in the Engineering department AND have a salary greater than 70,000.',
+    hints: [
+      { label: 'Syntax Hint (score → 0, Easy = pass/fail)', text: "Use WHERE with two conditions joined by AND — one for the dept column and one for the salary column." }
+    ],
+    answer: `SELECT *\nFROM employees\nWHERE dept = 'Engineering'\nAND salary > 70000;`,
+    expected: 'Aarav Sharma (75000), Rahul Mehta (90000), Divya Rao (83000). Anil Kumar (70000) is excluded — strict greater than.'
+  },
+  m1: {
+    level: 'Medium', marks: 3, topic: 'Self JOIN + COALESCE (Manager names)',
+    data: MEDIUM_DATA,
+    question: "Write a query to display each employee's name and their manager's name. If an employee has no manager, show 'No Manager' instead.",
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 2)', text: "Join the employees table to itself — once for the employee, once for the manager. Use LEFT JOIN so employees without a manager still appear." },
+      { label: 'Logic Hint (−1 more mark, score → 1)', text: "LEFT JOIN employees m ON e.manager_id = m.emp_id, then COALESCE(m.name, 'No Manager')." }
+    ],
+    answer: `SELECT\n  e.name AS employee,\n  COALESCE(m.name, 'No Manager') AS manager\nFROM employees e\nLEFT JOIN employees m ON e.manager_id = m.emp_id;`,
+    expected: 'Rahul Mehta, Vikram Joshi, Kiran Patel show "No Manager". Others show their manager\'s name.'
+  },
+  m2: {
+    level: 'Medium', marks: 3, topic: 'ROW_NUMBER() Window Function',
+    data: MEDIUM_DATA,
+    question: 'Write a query to rank employees within each department by salary from highest to lowest. Show employee name, department, salary and their rank within the department.',
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 2)', text: "Use a window function — ROW_NUMBER() OVER(...). Add PARTITION BY to reset the rank per department and ORDER BY to control ranking direction." },
+      { label: 'Logic Hint (−1 more mark, score → 1)', text: "ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS dept_rank" }
+    ],
+    answer: `SELECT\n  name, dept, salary,\n  ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS dept_rank\nFROM employees;`,
+    expected: 'Rahul Mehta rank 1 in Engineering (90000). Vikram Joshi rank 1 in Marketing. Kiran Patel rank 1 in HR.'
+  },
+  m3: {
+    level: 'Medium', marks: 3, topic: 'Running Total (Window SUM)',
+    data: MEDIUM_DATA,
+    question: "Write a query to show each sale with the running total of sale_amt for each employee ordered by sale date. Show employee name, sale date, sale amount and running total.",
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 2)', text: "Use SUM() as a window function with OVER(). Add PARTITION BY emp_id so the total resets per employee, and ORDER BY sale_date to accumulate in date order." },
+      { label: 'Logic Hint (−1 more mark, score → 1)', text: "SUM(sale_amt) OVER (PARTITION BY emp_id ORDER BY sale_date) AS running_total" }
+    ],
+    answer: `SELECT\n  e.name,\n  s.sale_date,\n  s.sale_amt,\n  SUM(s.sale_amt) OVER (\n    PARTITION BY s.emp_id\n    ORDER BY s.sale_date\n  ) AS running_total\nFROM sales s\nJOIN employees e ON s.emp_id = e.emp_id\nORDER BY e.name, s.sale_date;`,
+    expected: 'Priya Nair: 15000 → 33000 → 55000 → 66000. Vikram Joshi: 32000 → 59000 → 94000.'
+  },
+  m4: {
+    level: 'Medium', marks: 3, topic: 'CASE WHEN (Salary Band)',
+    data: MEDIUM_DATA,
+    question: "Write a query to categorise each employee into a salary band — 'Junior' if salary is below 50,000, 'Mid-Level' if between 50,000 and 74,999, and 'Senior' if 75,000 or above. Show name, salary and the band.",
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 2)', text: "Use CASE WHEN ... THEN ... WHEN ... THEN ... ELSE ... END — think of it like an if-else statement in SQL." },
+      { label: 'Logic Hint (−1 more mark, score → 1)', text: "CASE WHEN salary < 50000 THEN 'Junior' WHEN salary < 75000 THEN 'Mid-Level' ELSE 'Senior' END AS salary_band" }
+    ],
+    answer: `SELECT\n  name, salary,\n  CASE\n    WHEN salary < 50000 THEN 'Junior'\n    WHEN salary < 75000 THEN 'Mid-Level'\n    ELSE 'Senior'\n  END AS salary_band\nFROM employees\nORDER BY salary DESC;`,
+    expected: 'Rahul, Divya, Aarav → Senior. Anil, Vikram, Meera, Priya → Mid-Level. Kiran, Sneha, Pooja → Junior.'
+  },
+  m5: {
+    level: 'Medium', marks: 3, topic: 'Contribution % (Window SUM)',
+    data: MEDIUM_DATA,
+    question: "Write a query to calculate each employee's contribution percentage to total sales within their region. Show employee name, region, sale amount, region total and contribution %.",
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 2)', text: "Use SUM() as a window function partitioned by region to get the regional total alongside each row, then divide each sale by that total and multiply by 100." },
+      { label: 'Logic Hint (−1 more mark, score → 1)', text: "ROUND(sale_amt * 100.0 / SUM(sale_amt) OVER (PARTITION BY region), 2) AS contribution_pct" }
+    ],
+    answer: `SELECT\n  e.name, s.region, s.sale_amt,\n  SUM(s.sale_amt) OVER (PARTITION BY s.region) AS region_total,\n  ROUND(s.sale_amt * 100.0 /\n    SUM(s.sale_amt) OVER (PARTITION BY s.region), 2) AS contribution_pct\nFROM sales s\nJOIN employees e ON s.emp_id = e.emp_id\nORDER BY s.region, contribution_pct DESC;`,
+    expected: 'South: Vikram 64%, Priya 36%. West: Vikram 58.33%, Meera 23.33%, Priya 18.33%.'
+  },
+  m6: {
+    level: 'Medium', marks: 3, topic: 'LAG() — Previous Month Sales',
+    data: MEDIUM_DATA,
+    question: "Write a query to display each employee's monthly sales along with the previous month's sale amount. If there is no previous sale, show 0.",
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 2)', text: "LAG() is a window function that looks at the previous row's value. Use OVER(PARTITION BY emp_id ORDER BY sale_date) to look per employee in date order." },
+      { label: 'Logic Hint (−1 more mark, score → 1)', text: "COALESCE(LAG(sale_amt) OVER (PARTITION BY emp_id ORDER BY sale_date), 0) AS prev_month_sales" }
+    ],
+    answer: `SELECT\n  e.name,\n  TO_CHAR(s.sale_date, 'Mon YYYY') AS sale_month,\n  s.sale_amt,\n  COALESCE(LAG(s.sale_amt) OVER (\n    PARTITION BY s.emp_id\n    ORDER BY s.sale_date\n  ), 0) AS prev_month_sales\nFROM sales s\nJOIN employees e ON s.emp_id = e.emp_id\nORDER BY e.name, s.sale_date;`,
+    expected: 'Priya Nair Jan 2024: prev=0. Feb 2024: prev=15000. Apr 2024: prev=18000. May 2024: prev=22000.'
+  },
+  h1: {
+    level: 'Hard', marks: 5, topic: 'Top Customer per City (RANK + CTE)',
+    data: HARD_DATA,
+    question: 'Find the highest spending customer in each city. Show city, customer name, and their total spend. If two customers in the same city have equal spend, show both.',
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 4)', text: "Use a CTE to calculate total spend per customer per city first. Then use a window function with PARTITION BY city to rank within each city. Filter WHERE rank = 1." },
+      { label: 'Logic Hint (−1 more mark, score → 3)', text: "CTE with SUM grouped by city and name → RANK() OVER (PARTITION BY city ORDER BY total_spend DESC) → WHERE rnk = 1. Use RANK not ROW_NUMBER to handle ties." }
+    ],
+    answer: `WITH city_spend AS (\n  SELECT c.city, c.name, SUM(t.amount) AS total_spend\n  FROM customers c\n  JOIN transactions t ON c.cust_id = t.cust_id\n  GROUP BY c.city, c.name\n),\nranked AS (\n  SELECT city, name, total_spend,\n    RANK() OVER (PARTITION BY city ORDER BY total_spend DESC) AS rnk\n  FROM city_spend\n)\nSELECT city, name, total_spend\nFROM ranked\nWHERE rnk = 1\nORDER BY total_spend DESC;`,
+    expected: 'Bangalore: Rahul Mehta 125000. Chennai: Pooja Reddy 99000. Mumbai: Vikram Joshi 88000. Delhi: Meera Gupta 61000. Hyderabad: Divya Rao 6000.'
+  },
+  h2: {
+    level: 'Hard', marks: 5, topic: 'RFM Customer Classification (CASE WHEN + CTE)',
+    data: HARD_DATA,
+    question: "Classify each customer based on their most recent transaction date and total spend. Label them 'Champion' if last purchase was within 60 days of '2024-06-30' AND total spend exceeds 50,000. Label them 'At Risk' if last purchase was more than 90 days before '2024-06-30'. Everyone else is 'Regular'. Show name, segment label, last purchase date and total spend.",
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 4)', text: "Use a CTE to calculate MAX(txn_date) and SUM(amount) per customer first. Then apply CASE WHEN on the results — use date subtraction to find days since last purchase." },
+      { label: 'Logic Hint (−1 more mark, score → 3)', text: "CASE WHEN ('2024-06-30' - last_purchase) <= 60 AND total_spend > 50000 THEN 'Champion' WHEN ('2024-06-30' - last_purchase) > 90 THEN 'At Risk' ELSE 'Regular' END" }
+    ],
+    answer: `WITH stats AS (\n  SELECT c.cust_id, c.name,\n    MAX(t.txn_date) AS last_purchase,\n    SUM(t.amount)   AS total_spend\n  FROM customers c\n  JOIN transactions t ON c.cust_id = t.cust_id\n  GROUP BY c.cust_id, c.name\n)\nSELECT name, last_purchase, total_spend,\n  CASE\n    WHEN ('2024-06-30' - last_purchase) <= 60\n     AND total_spend > 50000 THEN 'Champion'\n    WHEN ('2024-06-30' - last_purchase) > 90 THEN 'At Risk'\n    ELSE 'Regular'\n  END AS segment_label\nFROM stats\nORDER BY total_spend DESC;`,
+    expected: 'Champion: Rahul Mehta, Pooja Reddy, Aarav Sharma. At Risk: Vikram Joshi, Kiran Patel, Divya Rao, Anil Kumar. Regular: Meera Gupta, Priya Nair, Sneha Iyer.'
+  },
+  h3: {
+    level: 'Hard', marks: 5, topic: 'Month-over-Month Revenue Growth (LAG + CTE)',
+    data: HARD_DATA,
+    question: 'Calculate the month-over-month revenue growth percentage across all customers. Show the month, total revenue, previous month revenue and growth percentage rounded to 2 decimal places.',
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 4)', text: "Use DATE_TRUNC to group by month, SUM revenue per month in a CTE, then use LAG() to pull the previous month's revenue into the current row." },
+      { label: 'Logic Hint (−1 more mark, score → 3)', text: "CTE for monthly SUM → LAG(revenue) OVER (ORDER BY txn_month) → ROUND((revenue - prev_revenue) * 100.0 / prev_revenue, 2) AS growth_pct → WHERE prev_revenue IS NOT NULL" }
+    ],
+    answer: `WITH monthly AS (\n  SELECT DATE_TRUNC('month', txn_date) AS txn_month,\n    SUM(amount) AS revenue\n  FROM transactions\n  GROUP BY DATE_TRUNC('month', txn_date)\n),\nwith_prev AS (\n  SELECT txn_month, revenue,\n    LAG(revenue) OVER (ORDER BY txn_month) AS prev_revenue\n  FROM monthly\n)\nSELECT\n  TO_CHAR(txn_month, 'Mon YYYY') AS month,\n  revenue, prev_revenue,\n  ROUND((revenue - prev_revenue) * 100.0 / prev_revenue, 2) AS growth_pct\nFROM with_prev\nWHERE prev_revenue IS NOT NULL\nORDER BY txn_month;`,
+    expected: 'Feb: -5.45%. Mar: +10.77%. Apr: -31.68%. May: -40.91%. Jun: -50.54%.'
+  },
+  h4: {
+    level: 'Hard', marks: 5, topic: 'Consecutive Monthly Streak (Gap & Islands)',
+    data: HARD_DATA,
+    question: 'Find the longest consecutive monthly purchasing streak for each customer. Show customer name and their longest streak in months.',
+    hints: [
+      { label: 'Syntax Hint (−1 mark, score → 4)', text: "Use CTEs. First get distinct months per customer using DATE_TRUNC. Assign a ROW_NUMBER per customer. Subtracting the row number from the month date groups consecutive months together — each group is a streak." },
+      { label: 'Logic Hint (−1 more mark, score → 3)', text: "DATE_TRUNC month → ROW_NUMBER() per customer → subtract (rn * INTERVAL '1 month') from txn_month → GROUP BY that value to get streak groups → COUNT per group = streak length → MAX streak per customer" }
+    ],
+    answer: `WITH monthly AS (\n  SELECT DISTINCT cust_id,\n    DATE_TRUNC('month', txn_date) AS txn_month\n  FROM transactions\n),\nranked AS (\n  SELECT cust_id, txn_month,\n    ROW_NUMBER() OVER (PARTITION BY cust_id ORDER BY txn_month) AS rn\n  FROM monthly\n),\nislands AS (\n  SELECT cust_id, txn_month,\n    txn_month - (rn * INTERVAL '1 month') AS grp\n  FROM ranked\n),\nstreaks AS (\n  SELECT cust_id, COUNT(*) AS streak_len\n  FROM islands\n  GROUP BY cust_id, grp\n)\nSELECT c.name,\n  MAX(s.streak_len) AS longest_streak_months\nFROM streaks s\nJOIN customers c ON s.cust_id = c.cust_id\nGROUP BY c.name\nORDER BY longest_streak_months DESC;`,
+    expected: 'Rahul Mehta: 6 months. Pooja Reddy & Aarav Sharma: 5 months. Meera Gupta: 4. Vikram Joshi, Kiran Patel, Sneha Iyer: 3.'
+  }
+};
+
+// ══════════════════════════════════════
+// PAGE NAVIGATION
+// ══════════════════════════════════════
+function showPage(n, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page' + n).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════
+// QUESTION RENDERING
+// ══════════════════════════════════════
+let currentQ = 'e1';
+const qOrder = ['e1','e2','e3','m1','m2','m3','m4','m5','m6','h1','h2','h3','h4'];
+
+function badgeHTML(level) {
+  const cls = { Easy: 'badge-easy', Medium: 'badge-medium', Hard: 'badge-hard' }[level];
+  const dot = { Easy: '🟢', Medium: '🟡', Hard: '🔴' }[level];
+  const marks = { Easy: '1 mark', Medium: 'up to 3 marks', Hard: 'up to 5 marks' }[level];
+  return `<span class="level-badge ${cls}">${dot} ${level} — ${marks}</span>`;
+}
+
+function renderQ(id) {
+  const q = QUESTIONS[id];
+  const idx = qOrder.indexOf(id);
+  const prev = qOrder[idx - 1];
+  const next = qOrder[idx + 1];
+
+  const hintsHTML = q.hints.map((h, i) => `
+    <div>
+      <button class="hint-toggle" onclick="toggleHint(this)">
+        💡 ${h.label} <span class="ht-arrow">▾</span>
+      </button>
+      <div class="hint-content">${h.text}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('q-main').innerHTML = `
+    ${badgeHTML(q.level)}
+    <div class="q-title">${q.topic}</div>
+    <div class="q-meta">Paste the data code into Teams chat first, then ask the question below.</div>
+
+    <div class="data-block">
+      <div class="data-block-header">
+        <div class="data-block-label">📋 Data Setup — paste this in Teams chat for candidate</div>
+        <button class="copy-btn" onclick="copyCode(this, 'data-${id}')">📋 Copy Code</button>
+      </div>
+      <pre class="code-block" id="data-${id}">${q.data}</pre>
+    </div>
+
+    <div class="q-prompt-box">
+      <strong>Ask the candidate:</strong><br>${q.question}
+    </div>
+
+    <div class="hints-block">
+      <div class="data-block-label" style="margin-bottom:8px">💡 Hints (for interviewer only — reveal if candidate is stuck)</div>
+      ${hintsHTML}
+    </div>
+
+    <div class="answer-block">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">
+        🔑 Show Sample Answer <span class="at-arrow">▾</span>
+      </button>
+      <div class="answer-content">
+        <pre class="code-block" style="margin-bottom:8px">${q.answer}</pre>
+        <div class="expected-box"><strong>Expected output:</strong> ${q.expected}</div>
+      </div>
+    </div>
+
+    <div class="q-nav">
+      ${prev ? `<button class="qnav-btn" onclick="showQ('${prev}', null)">← Previous</button>` : ''}
+      ${next ? `<button class="qnav-btn primary" onclick="showQ('${next}', null)">Next Question →</button>` : ''}
+    </div>
+  `;
+}
+
+function showQ(id, btn) {
+  currentQ = id;
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else {
+    // find matching sidebar btn
+    document.querySelectorAll('.sidebar-btn').forEach((b, i) => {
+      if (b.getAttribute('onclick') === `showQ('${id}', this)`) b.classList.add('active');
+    });
+  }
+  renderQ(id);
+  document.getElementById('q-main').scrollTop = 0;
+  window.scrollTo(0, 52);
+}
+
+function toggleHint(btn) {
+  btn.classList.toggle('open');
+  const content = btn.nextElementSibling;
+  content.classList.toggle('show');
+}
+
+function toggleAnswer(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('show');
+  btn.innerHTML = btn.classList.contains('open')
+    ? '🔑 Hide Sample Answer <span class="at-arrow" style="transform:rotate(180deg)">▾</span>'
+    : '🔑 Show Sample Answer <span class="at-arrow">▾</span>';
+}
+
+function copyCode(btn, preId) {
+  const text = document.getElementById(preId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '📋 Copy Code';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// ══════════════════════════════════════
+// SCORE SHEET
+// ══════════════════════════════════════
+const ALL_SQL_ROWS = [
+  { id: 'sq_e1', level: 'Easy',   topic: 'E1 — AVG + HAVING (dept avg salary)',      max: 1 },
+  { id: 'sq_e2', level: 'Easy',   topic: 'E2 — INNER JOIN (employee orders)',         max: 1 },
+  { id: 'sq_e3', level: 'Easy',   topic: 'E3 — WHERE filter (Engineering > 70k)',    max: 1 },
+  { id: 'sq_m1', level: 'Medium', topic: 'M1 — Self JOIN + COALESCE (managers)',     max: 3 },
+  { id: 'sq_m2', level: 'Medium', topic: 'M2 — ROW_NUMBER() dept rank',              max: 3 },
+  { id: 'sq_m3', level: 'Medium', topic: 'M3 — Running Total (window SUM)',           max: 3 },
+  { id: 'sq_m4', level: 'Medium', topic: 'M4 — CASE WHEN salary band',               max: 3 },
+  { id: 'sq_m5', level: 'Medium', topic: 'M5 — Contribution % per region',           max: 3 },
+  { id: 'sq_m6', level: 'Medium', topic: 'M6 — LAG() previous month sales',          max: 3 },
+  { id: 'sq_h1', level: 'Hard',   topic: 'H1 — Top customer per city (RANK + CTE)',  max: 5 },
+  { id: 'sq_h2', level: 'Hard',   topic: 'H2 — RFM Classification (CASE WHEN)',      max: 5 },
+  { id: 'sq_h3', level: 'Hard',   topic: 'H3 — Month-over-Month growth (LAG)',       max: 5 },
+  { id: 'sq_h4', level: 'Hard',   topic: 'H4 — Consecutive streak (Gap & Islands)', max: 5 },
+];
+
+const scores = {};
+const dnaState = {}; // did not ask
+
+function scoreButtons(rowId, max) {
+  let btns = '';
+  for (let i = 0; i <= max; i++) {
+    btns += `<button class="score-btn" onclick="setScore('${rowId}', ${i}, ${max})">${i}</button>`;
+  }
+  return btns;
+}
+
+function buildScoreRows(rows, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = rows.map(r => {
+    const badgeCls = r.level === 'Easy' ? 'badge-easy' : r.level === 'Medium' ? 'badge-medium' : 'badge-hard';
+    return `
+    <div class="score-row" id="row-${r.id}">
+      <div class="sr-badge">
+        <span class="level-badge ${badgeCls}" style="font-size:10px;padding:3px 8px">${r.level}<br><span style="font-size:9px;font-weight:400;opacity:.8">max ${r.max}</span></span>
+      </div>
+      <div class="sr-info">
+        <div class="sr-topic">${r.topic}</div>
+        <div class="sr-notes">
+          <input type="text" placeholder="Notes / hints given..." id="notes-${r.id}">
+        </div>
+      </div>
+      <div class="sr-score">
+        <div class="score-btns" id="btns-${r.id}">${scoreButtons(r.id, r.max)}</div>
+        <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
+          <span class="hint-used-label" id="hint-${r.id}">— not scored</span>
+          <button class="dna-btn" id="dna-${r.id}" onclick="toggleDNA('${r.id}')">✕ Did Not Ask</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDNA(rowId) {
+  dnaState[rowId] = !dnaState[rowId];
+  const row = document.getElementById(`row-${rowId}`);
+  const btn = document.getElementById(`dna-${rowId}`);
+  if (dnaState[rowId]) {
+    row.classList.add('dna');
+    btn.classList.add('dna-active');
+    btn.textContent = '↩ Re-include';
+    // clear score
+    delete scores[rowId];
+    document.querySelectorAll(`#btns-${rowId} .score-btn`).forEach(b => b.classList.remove('selected'));
+    document.getElementById(`hint-${rowId}`).textContent = '— not asked';
+  } else {
+    row.classList.remove('dna');
+    btn.classList.remove('dna-active');
+    btn.textContent = '✕ Did Not Ask';
+    document.getElementById(`hint-${rowId}`).textContent = '— not scored';
+  }
+  recalcTotals();
+}
+
+function setScore(rowId, val, max) {
+  if (dnaState[rowId]) return;
+  scores[rowId] = val;
+  const btns = document.querySelectorAll(`#btns-${rowId} .score-btn`);
+  btns.forEach((b, i) => b.classList.toggle('selected', i === val));
+  document.getElementById(`hint-${rowId}`).textContent = `${val} / ${max} marks`;
+  recalcTotals();
+}
+
+function recalcTotals() {
+  const asked = ALL_SQL_ROWS.filter(r => !dnaState[r.id]);
+  const sqlMax = asked.reduce((s, r) => s + r.max, 0);
+  const sqlSum = asked.reduce((s, r) => s + (scores[r.id] || 0), 0);
+
+  document.getElementById('sql-total').textContent = sqlSum;
+  document.getElementById('sql-max').textContent = sqlMax;
+  document.getElementById('sql-total-label').textContent = `${sqlSum} / ${sqlMax}`;
+  document.getElementById('grand-total').textContent = sqlSum;
+  document.getElementById('grand-max').textContent = sqlMax;
+}
+
+function selectOutcome(btn, cls) {
+  document.querySelectorAll('.outcome-btn').forEach(b => b.className = 'outcome-btn');
+  btn.classList.add(cls);
+}
+
+function resetSheet() {
+  if (!confirm('Reset all scores and candidate details?')) return;
+  Object.keys(scores).forEach(k => delete scores[k]);
+  Object.keys(dnaState).forEach(k => delete dnaState[k]);
+  ALL_SQL_ROWS.forEach(r => {
+    const row = document.getElementById(`row-${r.id}`);
+    const btn = document.getElementById(`dna-${r.id}`);
+    if (row) row.classList.remove('dna');
+    if (btn) { btn.classList.remove('dna-active'); btn.textContent = '✕ Did Not Ask'; }
+    document.querySelectorAll(`#btns-${r.id} .score-btn`).forEach(b => b.classList.remove('selected'));
+    document.getElementById(`hint-${r.id}`).textContent = '— not scored';
+  });
+  document.querySelectorAll('.sr-notes input').forEach(i => i.value = '');
+  document.querySelectorAll('.form-field input').forEach(i => { if (i.type !== 'date') i.value = ''; });
+  document.getElementById('comments').value = '';
+  document.querySelectorAll('.outcome-btn').forEach(b => b.className = 'outcome-btn');
+  recalcTotals();
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderQ('e1');
+  buildScoreRows(ALL_SQL_ROWS, 'sql-rows');
+  document.getElementById('cand-date').valueAsDate = new Date();
+  recalcTotals();
+});
+</script>
+<!-- ═══════════ LOGIN OVERLAY ═══════════ -->
+<div id="login-overlay" style="
+  position:fixed;inset:0;z-index:99999;
+  background:#0f1117;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Sans',sans-serif;
+">
+  <div style="
+    background:#1a1d2e;border:1px solid #2a2d38;border-radius:16px;
+    padding:40px 44px;width:100%;max-width:380px;
+    box-shadow:0 24px 60px rgba(0,0,0,0.6);
+  ">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:6px">
+        Lulu <span style="color:#ffd166">Interview</span> Tool
+      </div>
+      <div style="font-size:12px;color:#6b7280;letter-spacing:1px;text-transform:uppercase">Authorised Access Only</div>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#6b7280;margin-bottom:6px">Username</label>
+      <input id="li-user" type="text" placeholder="Enter username"
+        style="width:100%;padding:11px 14px;background:#0f1117;border:1.5px solid #374151;border-radius:8px;color:#fff;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"
+        onkeydown="if(event.key==='Enter')doLogin()"
+        onfocus="this.style.borderColor='#ffd166'" onblur="this.style.borderColor='#374151'">
+    </div>
+    <div style="margin-bottom:24px">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#6b7280;margin-bottom:6px">Password</label>
+      <input id="li-pass" type="password" placeholder="Enter password"
+        style="width:100%;padding:11px 14px;background:#0f1117;border:1.5px solid #374151;border-radius:8px;color:#fff;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"
+        onkeydown="if(event.key==='Enter')doLogin()"
+        onfocus="this.style.borderColor='#ffd166'" onblur="this.style.borderColor='#374151'">
+    </div>
+    <div id="li-err" style="display:none;background:#3b1212;border:1px solid #7f1d1d;border-radius:8px;padding:10px 14px;font-size:13px;color:#fca5a5;margin-bottom:16px;">
+      ❌ Incorrect username or password. Please try again.
+    </div>
+    <button onclick="doLogin()" style="
+      width:100%;padding:13px;background:#ffd166;color:#0f1117;border:none;border-radius:10px;
+      font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;
+      transition:background .2s;
+    " onmouseover="this.style.background='#f5c430'" onmouseout="this.style.background='#ffd166'">
+      Sign In →
+    </button>
+    <div style="text-align:center;margin-top:20px;font-size:11px;color:#4b5563;">
+      Confidential — For authorised interviewers only
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var VALID_USER = 'lulu_coe';
+  var VALID_PASS = 'coe';
+  var SESSION_KEY = 'lulu_interview_auth';
+
+  function doLogin() {
+    var u = document.getElementById('li-user').value.trim();
+    var p = document.getElementById('li-pass').value;
+    var err = document.getElementById('li-err');
+    if (u === VALID_USER && p === VALID_PASS) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      document.getElementById('login-overlay').style.display = 'none';
+      err.style.display = 'none';
+    } else {
+      err.style.display = 'block';
+      document.getElementById('li-pass').value = '';
+      document.getElementById('li-pass').focus();
+    }
+  }
+
+  window.doLogin = doLogin;
+
+  // Check if already authenticated this session
+  if (sessionStorage.getItem(SESSION_KEY) !== '1') {
+    document.addEventListener('DOMContentLoaded', function() {
+      var overlay = document.getElementById('login-overlay');
+      if (overlay) overlay.style.display = 'flex';
+    });
+  } else {
+    document.addEventListener('DOMContentLoaded', function() {
+      var overlay = document.getElementById('login-overlay');
+      if (overlay) overlay.style.display = 'none';
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
